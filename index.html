@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html><head>
+<title>SENSE OBJECTS</title>
+<link rel="shortcut icon" href="imgs/favicon.gif" type="image/x-icon">
+<link rel="stylesheet" href="css/common.css">
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<script src="js/jquery-1.11.0.js" type="text/javascript"></script>
+<script src="js/jQueryRotateCompressed.js" type="text/javascript"></script>
+<script src="js/jquery.easing.compatibility.js" type="text/javascript"></script>
+<script src="js/jquery.easing.1.3.js" type="text/javascript"></script>
+<script src="js/overlay.js" type="text/javascript"></script>
+<script type="text/javascript">
+var rotation; 
+var angle = 0;
+var which_track = 'side1';
+var is_play = false;
+
+function StopRotating ()
+{
+  $('#'+which_track+'-track')[0].pause();
+  $('#'+which_track+'-track')[0].currentTime = 0;
+  $('.play-icon').show();
+  $('.pause-icon').hide();
+  $('#circle').stopRotate();
+  clearInterval(rotation);
+}
+
+function ShowPlayTime (obj)
+{
+  var duration = parseInt( obj.duration );
+  var currentTime = parseInt( obj.currentTime );
+  var timeLeft = duration - currentTime;
+
+  var s = timeLeft % 60;
+  var m = Math.floor( timeLeft / 60 ) % 60;
+
+  s = s < 10 ? "0"+s : s;
+  m = m < 10 ? "0"+m : m;
+
+  $('#'+which_track+'-text .text-bottom timer').html(m+":"+s);
+}
+
+
+function DoRotate ()
+{
+  angle+=1;
+  if (angle == 360)
+    angle = 0;
+
+  $("#main").rotate({
+    duration:40,
+    angle:angle,
+      //center: ["50%", "50%"],
+      easing: function (x,t,b,c,d) {
+        // t: current time, b: begInnIng value, c: change In value, d: duration
+        return c*(t/d)+b;
+      }
+    })
+}
+
+$(document).ready(function() {     
+  $('.pause-icon').on("click touchend", function(e) {
+    is_play = false;
+    $('#'+which_track+'-track')[0].pause();
+    $('.play-icon').show();
+    $('.pause-icon').hide();
+    $('#circle').stopRotate();
+    clearInterval(rotation);
+  });
+  $('.play-icon').on("click touchend", function(e) {
+    $('#'+which_track+'-track')[0].play();
+    $('.play-icon').hide();
+    $('.pause-icon').show();
+    is_play = true;
+    rotation = setInterval(DoRotate,40);  
+  });   
+
+  $('.switch-play').on("click touchend", function(e) {
+    if (is_play)
+    {
+      $('#circle').stopRotate();
+      clearInterval(rotation);
+      $('.play-icon').show();
+      $('.pause-icon').hide();
+      is_play = false;
+    }
+    $('#'+which_track+'-track')[0].pause();
+    $('#'+which_track+'-track')[0].currentTime = 0;
+    angle = 0;
+    $("#main").rotate({
+      duration:40,
+      angle:angle,
+        //center: ["50%", "50%"],
+        easing: function (x,t,b,c,d) {
+          // t: current time, b: begInnIng value, c: change In value, d: duration
+          return c*(t/d)+b;
+        }
+      })
+
+    if (which_track == 'side1')
+      which_track = 'side2';
+    else
+      which_track = 'side1';
+
+    $('body').toggleClass('toblack');
+    $('body').toggleClass('towhite');
+    $('#side2-text').toggleClass('hide');
+    $('#side1-text').toggleClass('hide');  
+  });
+    // $('.info').on("click touchend", function(e) {
+    //   $('.info').addClass('hide');
+
+    //   $('#info-content').animate({top:0},500,function () {
+    //     $('.close').removeClass('hide');  
+    //   });
+    // });
+
+    // $('.close').on("click touchend", function(e) {
+
+    //   $('.close').addClass('hide');
+    //   $('#info-content').animate({top:'100%'},500,function () {
+    //     $('.info').removeClass('hide'); 
+    //   });
+    // }); 
+
+});
+</script>
+</head>
+<body class="towhite">
+
+  <div id="overLay" class="slideHelper gradient">
+    <div id="overLay-nav">
+      <div class="column first">
+        May 9&ndash;June 2, 2014<br/>
+      </div>
+      <div class="column middle">
+      </div>
+      <div class="column last">
+        <span class="squiggle reception" data-title="reception" data-bg="white">Information</span>
+        <span class="squiggle essay" data-title="essay"data-bg="black">Essay</span>
+        <span class="squiggle interview" data-title="interview" data-bg="white">Interview</span>
+      </div>
+    </div>
+
+    <div id="overLay-text">
+      <div id="show-title">
+        <p>SENSE<br/>OBJECTS<hr class="smallerbreak"/></p>
+        <p>Leah<br/>Beeferman<hr class="smallerbreak"/></p>
+        <p>Stephen<br/>Vitiello<hr class="smallerbreak"/>
+        </p>
+      </div>
+    </div>
+
+    <div id="reception" class="hide">
+      <p>Sense Objects<br/>
+        Curated by Regine Basha
+      </p>
+        <p>Opening reception and live performance<br/>
+        Friday, May 9, 6&ndash;9 pm
+        </p>
+      <p>Fridman Gallery<br/>
+        287 Spring Street<br/>
+        New York, NY
+      </p>
+    </div>
+
+    <div id="interview" class="hide">
+        <p class="interviewer">
+          Tell me a bit about this piece on this vinyl record&#59; How did it first come to mind?
+        </p>
+
+        <div class="leah">
+          <span class="int-header">Leah</span>
+          Several years ago&#44; I started making contact microphone records in science laboratories—mostly in a variety of physics labs&#44; but a few other branches of science as well. The contact microphones act as a kind of stethoscope to listen to the inner workings of the machines&#44; bringing out warmer and more internal sounds than you might except from some equipment performing a repetitive or esoteric mechanical or computer-driven task.
+
+          <br/><br/>I wanted to use these sounds to make sound pieces that somehow imagined these machines away from their everyday workings&#44; and to use them to create an entirely invisible yet physical space created solely from sound.
+          <br/><br/>To aid me in doing so&#44; I also recorded some synthesizers&#44; myself making some vocal sounds&#44; and some other performative sounds in-studio. This gave me a little more variety of sound to work with&#44; allowing for a more intricate and interesting narrative.
+        </div>
+
+        <div class="stephen">
+          <p><span class="int-header">Stephen</span>
+          At Virginia Commonwealth University in Richmond where I teach&#44; a PhD student&#44; John Priestley&#44; invited me on a couple of occasions to do some source recordings using the University’s gamelan. I went for the experience&#44; more than anything&#44; fearing that the sounds would be too distinctly recognizable of another culture and another wonderful form of music that I can’t replicate in any honest way. I love the process of recording even if there’s no expectation that every sound or every session will be useful. That said&#44; often simple ideas lead to surprises–when you have little expectation and discover something in the process.</p>
+        </div>
+
+
+       <p class="interviewer">
+        What qualities were you after in this piece? How did you arrive at them?
+      </p>
+
+      <div class="leah">
+        <span class="int-header">Leah</span>
+        I wanted to make the space created by the sound to shift&#44; constantly: from dense to empty&#44; vast to small&#44; far away to close up—a changing narrative with no definitive resolution. I had read a theory in quantum physics that true empty space is not actually empty&#44; but is instead quite dense and turbulent. I found this paradox quite striking&#44; and wanted to make a sound piece that was both empty and dense at the same time: fluctuating between the two&#44; but also&#44; at moments&#44; hopefully embodying both.
+
+        <br/><br/>I also wanted it to sound as emotional as it does mechanical. My sound pieces often seem anxious; I think it's partially a way to immediately engage a listener and ask them to come to terms with a new sound environment&#44; but is also a bit of a reflection of my own personality. For me&#44; sound conveys an internal&#44; abstract narrative. I like to make that narrative tangible and palpable&#44; but for it to also remain invisible. Combining a lot of different textures and letting them slowly evolve&#44; influence each other&#44; and change completely without the listener really noticing anything has "happened" is one main goal with these pieces&#44; and is done through a lot of editing and re-editing!   
+      </div>
+
+      <div class="stephen">
+        <p><span class="int-header">Stephen</span>
+        After a while we started playing with a bow meant for a different instrument. We were bowing the edges of the gamelan instruments&#44; rather than striking them. Beautiful overtones were produced with beating patterns in the air as frequencies collided. Listening on headphones to the stereo separation&#44; playing the edge of one instrument to the right and then another to the left established a rhythm but also a stereo space that felt exciting. For the catalog/record&#44; I’ve also included some more aggressive moments&#44; created by bouncing small bowls and gongs off of a drum-head.
+      </p>
+      </div>
+
+      <p class="interviewer">
+        What is most important for you when producing sound works?
+      </p>
+
+      <div class="leah">
+        <span class="int-header">Leah</span>
+        I think the most important thing for me in my sound work is&#44; really&#44; creating a very complex narrative that does not resolve in any definitive way. For a long time&#44; I've been drawn to narratives where nothing really "happens"—narratives that somehow redefine what an "event" can be. Sound is the perfect medium for this&#44; because it can be so non-representational while also remaining firmly rooted in physical reality and experience.
+      </div>
+
+      <div class="stephen">
+        <p><span class="int-header">Stephen</span>
+        That’s something I’d probably answer differently in every context. If there are a few common points to my goals&#44; I hope the sounds have a presence. I hope to find a way to use time and space effectively. Ideally&#44; there’s a conceptual element&#44; although I don’t always know it from the start. I know lots of artists who begin with an idea. I think I tend to begin with a context and hope that some sort of narrative reveals itself in the action of recording.
+      </p>
+      </div>
+
+
+     <p class="interviewer">
+      When do you know that a work has finally coalesced? (see how I didn't say 'finished' :)
+    </p>
+
+    <div class="leah">
+      <span class="int-header">Leah</span>
+      I know a work is done when I listen over and over and nothing jumps out or feels out of place&#44; jarring&#44; or awkward. Because I want the narrative to evolve almost unnoticed&#44; nothing should really feel too surprising. That said&#44; I also have to be careful that it doesn't get boring&#44; that sections don't go on for too long&#44; and that&#44; altogether&#44; it's an elaborate experience of listening. It's all intuitive&#44; ultimately&#44; but those are the main things I listen for when I'm starting to feel like a piece is coming together.<br/>
+    </div>
+
+
+    <div class="stephen">
+      <p><span class="int-header">Stephen</span>
+      That’s such an internal feeling&#44; maybe best described as a kind of emotional stability when I’m listening back. Sometimes you hear it on the hundredth performance or edit. Sometimes it’s there from the beginning. The pieces feel&#44; to me at least&#44; like they’re in the right place. I know so little about traditional composition approaches but I can only say that I get to a point where some sort of idea or tension feels resolved.
+    </p>
+    </div>
+</div>
+
+<div id="essay" class="hide">
+ <p><Sense objects:<br/> The Work of Leah Beeferman and Stephen Vitiello,<br/>Viewed and Heard Together<br/>
+
+  Regine Basha
+
+  <p>&#39;If a tree falls in the forest and no one is around to hear, would it still make a sound?&#39; points to one of the greatest scientific and philosophical conundrums of our time&#45;and hence the value of understanding the realms of sound. Does sound produce our sense of hearing or does our sense of hearing produce sound? In Eastern thought, particularly the Indian Vedas, the element of Ether carries sound frequencies and it is only the object of &#39;sound&#39; when it is perceived by the instrument of the ear. As a sense object, not only does sound deliver information, but also affects our inner compass and orientation to space. How might we consider the faculty of hearing as a vantage point unto the world?</p>
+
+
+  <p>Sense Objects features the visual work of Leah Beeferman and Stephen Vitiello: two artists who have, in varying degrees, worked with sound and who first met one another in the academic environment (Vitiello was Beeferman&#39;s professor at Virginia Commonwealth University in 2009). This parallel pairing brings together their shared interest in producing art from a sonic perspective. The exhibition foregrounds two series of visual work&#44; one by each artist, which are influenced by listening to and working with natural soundscapes; it also features two new four&#45;channel sonic compositions made independently of the visual work. This vinyl record, available at the exhibition as an artwork and as the show catalogue, presents two new sound pieces and a printed dialogue with the artists about their working processes with sound&#44; specifically. The record/catalogue is produced with Textual Records and Everything Studio.</p>
+
+  <p>Sound art need not be exclusive to art with sound&#59; active listening may also be the guiding principle through and by which art in other media is conceived. From this position, we may learn of new conceptual renderings of space and place, hidden qualities of the natural and industrial world&#44; and notions of the expanded space of the body.</p>
+
+  <p>Stephen Vitiello began working formally with Polaroids as a format for over ten years as part of his field recording practice—which took off in 2003 with a seminal trip to the Brazilian Amazon. Field recordings&#45;or as R. Murray Schafer articulated in the 1970s, listening to &#39;soundscapes&#39;&#45;heightens awareness of what Schafer called &#39;acoustic ecology.&#39; The practice of field recording has since produced a spectrum of trajectories including activist&#44; scientific&#44; and avant&#45;garde music or sound art approaches. In the case of many contemporary artists today, as with Stephen Vitiello and Leah Beeferman&#44; a mingling of investigations and intentions is felt.</p>
+
+  <p>Vitiello&#39;s Polaroids&#44; depicting his position before a natural place and coupled with a text that shares the sonic moment at the moment of capture, are in themselves fleeting objects of reception. As visual documents of nature, they are both as curiously mundane as they are mysteriously beguiling. Simple texts that read &#39;Near silent evening&#39; or &#39;Early evening&#44; an owl tucked away&#39; accompany the image discretely. Vitiello considers the doubling of time: the instantaneous moment of capture followed by the performativity of the Polaroid&#45;a very slow growing and then dissolving breath of the image. Through their insistent modesty, the Polaroids bear witness the poignant impossibility to stop time. Like On Kawara&#39;s postcards, they are his own &#39;I was here&#39; note.</p>
+
+  <p>Sense organs, we are reminded here, are always, relentlessly, receiving. Often times Vitiello will intentionally interrupt the Polaroids&#39; development process as a notational device of his intervention into that space and time. Much like his sonic compositions, Vitiello often works by generating a call and response within a given context and space, meaning his physical presence is registered through a dialogue with the given locale. It becomes important for the artist to involve himself in natural systems that might have a poetic quality beyond their source. Hovering between field reportage and captures of meditative states, the Polaroid film becomes, for Vitiello, a proxy to his own sensual mechanisms.</p>
+
+
+  <p>Leah Beeferman makes sound and visual work simultaneously and arrived at her current series of image&#45;making by learning from the structure of her sonic compositions. Her primary conceptual drive lies in exploring the formal and narrative potential of density and emptiness. Her keen interest in quantum physics (her father was a scientist) informs her overall research and experimental approach, yet Beeferman is well aware of the ‘unpicturability’ of this theoretical scientific inquiry. For her, it becomes a valuable point of departure to create parallel inquiries in order to work through certain problems of artmaking.</p>
+
+  <p>In her sound compositions, field recordings are taken out of context and layered with digitally&#45;created sound in modalities that speak to &#39;an internal abstract narrative&#44;&#39; as she puts it. Similarly, her current digital images, which incorporate photographs made while on residencies in the Arctic and subsequently in Finland, are highly colored digital collages that seem to evoke various emotional registers. Like loose puzzles incorporating shaped fragments of nature, images suspend alongside various digital markings or scans of ambiguous surfaces. Intermittently, a digitally drawn shape is pushed to appear natural, while an image of water evolves as flat and graphic. In proximity, these hot and cold abstractions produce highly ambiguous spaces and surfaces that push and pull our perceptual reception of them, as they might if we were to hear their sound.</p>
+
+  <p>Beeferman sometimes calls the process of making these works as &#39;reverse&#45;drawings&#39; since there is both a building and erasing action happening simultaneously. Viewing them produces some kind of subtle&#41; yet optically challenging exercise in navigating the simultaneous intake of the &#39;real&#39; and &#39;virtual&#39; realms, not unlike an acceleration of our daily sensory lives both in the physical world and online. They beg the question, &#39;where are we located?&#39;in this unpicturable scientific space.</p>
+
+  <p>For both Vitiello and Beeferman, the performative process of making these works is as meaning&#45;laden as is the final image. They remind us that nothing observed or heard is unaffected by the observer/listener.</p>
+  </div>   
+  <div id="overLayBar">&nbsp;</div>
+</div>
+
+<div class="player">
+  <div class="play-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 50 50" enable-background="new 0 0 50 50" xml:space="preserve">
+      <path d="M50.009 24.305C32.612 15.6 16.5 7.5 0-0.718c0 17.1 0 33 0 50 C16.693 40.9 32.6 33 50 24.305z"></path>
+    </svg>
+  </div>
+  <div class="pause-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 50 50" enable-background="new 0 0 50 50" xml:space="preserve">
+      <path d="M50.063 50c-5.037 0-9.807 0-15 0c0-16.574 0-33.164 0-50c4.893 0 9.8 0 15 0C50.063 16.5 50.1 33 50.1 50z"></path>
+      <path d="M15 50c-5.037 0-9.807 0-15 0C0 33.4 0 16.8 0 0c4.893 0 9.8 0 15 0C15 16.5 15 33 15 50z"></path>
+    </svg>
+  </div>
+</div>
+
+<!--<div id="info" class="info">
+  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 50 50" enable-background="new 0 0 50 50" xml:space="preserve">
+    <path d="M27.403,10.01v4.887h-4.806V10.01H27.403z M27.403,18.047v20.194h-4.806V18.047H27.403z"/>
+    <circle class="info-circle" fill="none" stroke="#000000" stroke-width="4" stroke-miterlimit="10" cx="25" cy="24.125" r="21.643"/>
+  </svg>
+</div>!-->
+
+<div class="switch-play">
+  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 50 50" enable-background="new 0 0 50 50" xml:space="preserve">
+    <path d="M29.836 13.657c4.376 1.9 14.9 10.2 14.9 10.194S47.801 10.2 50 5.543c-0.601-0.32-5.848 7.03-6.606 8.1 c-2.542-4.645-6.342-8.805-8.964-10.421C25.569-2.24 12.951-0.703 6.3 7.428c-11.111 13.538-7.016 35.6 8.7 41.1 c1.575 0.5 4.2 1.3 5.9 1.456c16.192 1.1 22.209-13.956 22.209-13.956l-3.61-2.427 c-5.105 12.055-18.015 14.644-27.022 8.01c-4.071-2.998-6.819-7.929-7.658-13.228c-1.296-8.19 2.626-16.869 8.205-20.874 c4.987-3.58 12.169-4.011 17.869-1.092c4.084 2.1 5.6 5 8.9 8.728l-0.025 0 C39.755 15.1 30.1 12.9 29.8 13.657z"/>
+  </svg>
+</div>
+
+
+<div id="main">
+  <svg height="40" width="40"><circle cx="20" cy="20" r="19" fill="black" /></svg> 
+  <div id="side1-text">
+    <div class="text-top">
+      <span>Leah Beeferman<br/>Field Variations</span>
+    </div>
+    <div class="text-bottom">
+      <span>45 rpm<br/><timer>05:00</timer></span>
+    </div>
+  </div>
+  <div id="side2-text" class="hide">
+    <div class="text-top">
+      <span>Stephen Vitiello<br/>Scraped and Bowed</span>
+    </div>
+    <div class="text-bottom">
+      <span>45 rpm<br/><timer>05:00</timer></span>
+    </div>
+  </div>
+</div>
+
+
+<div id="info-content">
+  <div id="close" class="close hide">
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 50 50" enable-background="new 0 0 50 50" xml:space="preserve">
+      <path class="close" d="M36.007,12.42l-7.386,11.347l8.364,13.108h-6.75l-5.087-7.728l-4.891,7.728h-6.994l8.412-13.108L14.241,12.42h6.896 l4.011,6.163l3.913-6.163H36.007z"/>
+      <circle fill="none" stroke="#000000" stroke-width="4" stroke-miterlimit="10" cx="25.124" cy="24.648" r="21.643"/>
+    </svg>
+  </div>
+  <div class="info-text">
+    <span>
+      <white>May 9&#151;June 7, 2014</white>
+      <black>Leah Beeferman &amp; Stephen Vitiello</black><br/>
+      <white> Curated by Regine Basha</white>
+      <black>Fridman Gallery, New York, NY</black>
+    </span>
+  </div>
+</div>
+
+<audio id="side1-track" class="sound" onended="StopRotating()" ontimeupdate="ShowPlayTime(this)">
+  <source preload="auto" src="audio/beeferman.mp3">
+    <source preload="auto" src="audio/beeferman.ogg">
+    </audio>
+    <audio id="side2-track" class="sound" onended="StopRotating()" ontimeupdate="ShowPlayTime(this)">
+      <source preload="auto" src="audio/vitiello.mp3">
+        <source preload="auto" src="audio/vitiello.ogg">
+        </audio>
+      </body>
+      </html>
